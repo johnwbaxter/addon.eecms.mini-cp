@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * ExpressionEngine Video Player Module
+ * ExpressionEngine Mini CP Module
  *
- * @package			Video Player
+ * @package			Mini CP
  * @subpackage		Modules
  * @category		Modules
  * @author			Benjamin David
- * @link			http://dukt.fr/en/addons/video-player/ 
+ * @link			http://duktee.com/addons/mini-cp/ 
  */
 
 class Minicp {
@@ -33,7 +33,6 @@ class Minicp {
 	
 	function search() {	
 		
-		//$terms = explode(" ", $this->EE->input->get('term'));
 		$terms = $this->EE->input->get('term');
 		
 		$this->EE->db->like('title', $terms); 
@@ -148,11 +147,13 @@ class Minicp {
 				';
 				
 				if($this->EE->session->userdata['can_moderate_comments'] == "y") {
-					$r .= '<li><a href="'.$base.AMP.'D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p">Comments';
+
 					if($nb_comments > 0) {
-						$r .= ' <strong>'.$nb_comments.'</strong>';
+						$r .= '<li><a href="'.$base.AMP.'D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p">Comments <strong>'.$nb_comments.'</strong></a></li>';
+					} else {
+						$r .= '<li><a href="'.$base.AMP.'D=cp&C=addons_modules&M=show_module_cp&module=comment">Comments</a></li>';					
 					}
-					$r .= '</a></li>';
+					
 				}
 				
 				$r .= '
@@ -197,7 +198,9 @@ class Minicp {
 			}
 			
 			if($jqueryui == "yes") {
-				$r .= '<script type="text/javascript" src="'.$this->theme_url().'jquery-ui-1.8.9.custom/js/jquery-ui-1.8.9.custom.min.js"></script>';
+				//$r .= '<script type="text/javascript" src="'.$this->theme_url().'jquery-ui-1.8.9.custom/js/jquery-ui-1.8.9.custom.min.js"></script>';
+				$r .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>';
+				
 			}
 			$r .= '<script type="text/javascript" src="'.$this->theme_url().'minicp.js"></script>';
 			return $r;
@@ -227,5 +230,5 @@ class Minicp {
 }
 /* END Class */
 
-/* End of file mod.videoplayer.php */
-/* Location: ./system/expressionengine/third_party/videoplayer/mod.videoplayer.php */
+/* End of file mod.minicp.php */
+/* Location: ./system/expressionengine/third_party/minicp/mod.minicp.php */

@@ -1,18 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * ExpressionEngine Video Player Module
+ * ExpressionEngine Mini CP Module
  *
- * @package			Video Player
+ * @package			Mini CP
  * @subpackage		Modules
  * @category		Modules
  * @author			Benjamin David
- * @link			http://dukt.fr/en/addons/video-player/ 
+ * @link			http://duktee.com/addons/mini-cp/ 
  */
  
 class Minicp_upd {
 
-	var $version = '1.0b1';
+	var $version = '1.0';
 	
 	/* constructor */
 	
@@ -99,7 +99,9 @@ class Minicp_upd {
 	}
 	
 }
+
+
 /* END Class */
 
-/* End of file upd.videoplayer.php */
-/* Location: ./system/expressionengine/third_party/videoplayer/upd.videoplayer.php */
+/* End of file upd.minicp.php */
+/* Location: ./system/expressionengine/third_party/minicp/upd.minicp.php */

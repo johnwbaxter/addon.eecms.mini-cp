@@ -76,7 +76,7 @@ class Minicp {
 		//var_dump($this->EE->session->userdata);
 	
 	
-		$current_channel = new Channel();
+		//$current_channel = new Channel();
 
 
 		$entry_id = $this->EE->TMPL->fetch_param('entry_id');

@@ -3,7 +3,7 @@
 		<?
 		$r .= '<li><a';
 		if($entry_id) {
-			$r .= ' href="'.$base.AMP.'&D=cp&C=content_publish&M=entry_form&channel_id='.$channel_id.'&entry_id='.$entry_id.'"';
+			$r .= ' href="'.$this->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'"';
 		} else {
 			$r .= ' href="#" class="disabled"';
 		}
@@ -16,7 +16,7 @@
 				<ul>
 					<?
 					foreach($channels as $c) {
-						$r .= '<li><a href="'.$base.AMP.'D=cp&C=content_publish&M=entry_form&channel_id='.$c->channel_id.'">'.$c->channel_title.'</a></li>';
+						$r .= '<li><a href="'.$this->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$c->channel_id).'">'.$c->channel_title.'</a></li>';
 					}
 					?>
 				</ul>
@@ -41,18 +41,18 @@
 		</li>
 	</ul>
 	<ul class="right">
-		<li><a href="<?=$base?>&D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p">Comments
+		<li><a href="<?=$this->minicp_lib->cp_backlink('D=cp'.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=comments'.AMP.'status=p')?>">Comments
 		<?
 		if($nb_comments > 0) {
 			$r .= ' <strong>'.$nb_comments.'</strong>';
 		}
 		?></a></li>
-		<li><a href="<?=$base?>&D=cp&C=homepage">Control Panel</a></li>
+		<li><a href="<?=$this->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage')?>">Control Panel</a></li>
 		<li class="more">
 			<a href="#">Benjamin David <span></span></a>
 			<div class="account">
 				<ul>
-					<li><a href="<?=$base?>&D=cp&C=myaccount">My Account</a></li>
+					<li><a href="<?=$this->minicp_lib->cp_backlink('D=cp'.AMP.'C=myaccount')?>">My Account</a></li>
 					<li><a href="?ACT='.$logout_action_id.'">Logout</a></li>
 				</ul>
 				<div class="box-arrow"></div>

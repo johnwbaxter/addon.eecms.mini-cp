@@ -22,6 +22,8 @@ class Minicp {
 			
 		$this->EE =& get_instance();
 		
+		$this->EE->load->library('minicp_lib');
+		
 		$r = "";
 		$r .= $this->javascripts();
 		$r .= $this->styles();
@@ -48,12 +50,13 @@ class Minicp {
 			
 			
 			array_push($r, array(
-				'id' => $row->entry_id,
-				'channel_id' => $row->channel_id,
-				'channel_title' => $channel_title,
-				'entry_title' => $row->title,
-				'label' => $row->title,
-				'value' => $row->title,
+					'id' => $row->entry_id,
+					'channel_id' => $row->channel_id,
+					'channel_title' => $channel_title,
+					'entry_title' => $row->title,
+					'label' => $row->title,
+					'value' => $row->title,
+					'cp_link' => str_replace('&amp;', '&', $this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$row->channel_id.AMP.'entry_id='.$row->entry_id))
 				)
 			);
 		}
@@ -73,12 +76,7 @@ class Minicp {
 			return "";
 		}
 		
-		//var_dump($this->EE->session->userdata);
-	
-	
-		//$current_channel = new Channel();
-
-
+		
 		$entry_id = $this->EE->TMPL->fetch_param('entry_id');
 		$site_id = $this->EE->config->item('site_id');
 		$base = $this->EE->config->item('cp_url');
@@ -98,6 +96,8 @@ class Minicp {
 		$this->EE->db->where('entry_id', $entry_id);
 		$channel_id = $this->EE->db->get('channel_titles')->row('channel_id');
 		
+		$site_id = $this->EE->db->where('entry_id', $entry_id)->get('channel_titles')->row('site_id');
+		
 		$search_action_id = $this->EE->db->where(array('class' => 'Minicp', 'method' => 'search'))->get('actions')->row('action_id'); 
 		
 		$r = '
@@ -107,7 +107,7 @@ class Minicp {
 			
 				$r .= '<li><a';
 				if($entry_id) {
-					$r .= ' href="'.$base.AMP.'&D=cp&C=content_publish&M=entry_form&channel_id='.$channel_id.'&entry_id='.$entry_id.'"';
+					$r .= ' href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'"';
 				} else {
 					$r .= ' href="#" class="disabled"';
 				}
@@ -119,7 +119,7 @@ class Minicp {
 					<div class="channels">
 						<ul>';
 							foreach($channels as $c) {
-								$r .= '<li><a href="'.$base.AMP.'D=cp&C=content_publish&M=entry_form&channel_id='.$c->channel_id.'">'.$c->channel_title.'</a></li>';
+								$r .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$c->channel_id).'">'.$c->channel_title.'</a></li>';
 							}
 							$r .= '
 						</ul>
@@ -147,13 +147,11 @@ class Minicp {
 				';
 				
 				if($this->EE->session->userdata['can_moderate_comments'] == "y") {
-
+					$r .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p').'">Comments';
 					if($nb_comments > 0) {
-						$r .= '<li><a href="'.$base.AMP.'D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p">Comments <strong>'.$nb_comments.'</strong></a></li>';
-					} else {
-						$r .= '<li><a href="'.$base.AMP.'D=cp&C=addons_modules&M=show_module_cp&module=comment">Comments</a></li>';					
+						$r .= ' <strong>'.$nb_comments.'</strong>';
 					}
-					
+					$r .= '</a></li>';
 				}
 				
 				$r .= '
@@ -163,7 +161,7 @@ class Minicp {
 					<a href="#">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
 					<div class="account">
 						<ul>
-							<li><a href="'.$base.AMP.'D=cp&C=myaccount">My Account</a></li>
+							<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=myaccount').'">My Account</a></li>
 							<li><a href="?ACT='.$logout_action_id.'">Logout</a></li>
 						</ul>
 						<div class="box-arrow"></div>
@@ -198,7 +196,6 @@ class Minicp {
 			}
 			
 			if($jqueryui == "yes") {
-				//$r .= '<script type="text/javascript" src="'.$this->theme_url().'jquery-ui-1.8.9.custom/js/jquery-ui-1.8.9.custom.min.js"></script>';
 				$r .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>';
 				
 			}

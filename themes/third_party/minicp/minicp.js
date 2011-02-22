@@ -82,7 +82,7 @@ $(document).ready(function() {
 	/* auto complete */
 
 
-	$( "#minicp-jquery" ).autocomplete({
+	$( "#minicp-jquery").autocomplete({
 		source: $( "#minicp-jquery" ).attr('rel'),
 		appendTo:"#minicp-search-results",
 		open: function() {
@@ -96,7 +96,7 @@ $(document).ready(function() {
 			
 			//console.log(ui.item.id);
 			//console.log(ui.item.channel_id);
-			var url = $("#minicp-search-results").attr('rel') + "&channel_id=" + ui.item.channel_id + "&entry_id=" + ui.item.id;
+			var url = ui.item.cp_link;
 			
 			location.href = url;
 		}

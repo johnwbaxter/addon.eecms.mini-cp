@@ -1,6 +1,8 @@
 
+
 body {
 	padding-top: 51px;
+	font-family: Arial;
 }
 
 .minicp {
@@ -119,6 +121,7 @@ body {
 .minicp ul {
 	list-style: none;
 	margin: 0;
+	padding: 0;
 }
 
 
@@ -191,6 +194,7 @@ body {
 .minicp .account {
 	margin-top: 2px;
 }
+
 
 .minicp .right {
 	float: right;

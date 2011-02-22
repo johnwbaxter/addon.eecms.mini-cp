@@ -5,10 +5,13 @@ class Minicp_lib {
 	function cp_backlink($url = false)
 	{
 		$CI =& get_instance();
-		
+
 		$base = $CI->config->item('cp_url');
-		
 		$base .= "?S=".$CI->session->userdata('session_id');
+
+		if($CI->config->item('multiple_sites_enabled') != "y") {
+			return $base.AMP.$url;
+		}
 		
 		if ( ! $url)
 		{

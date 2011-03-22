@@ -1,4 +1,4 @@
-<div class="minicp">
+<div id="minicp-widget" class="minicp">
 	<ul class="left">
 		<?
 		$r .= '<li><a';

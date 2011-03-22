@@ -45,4 +45,56 @@ class Minicp_lib {
 		
 		return $base.AMP."D=cp".AMP."C=sites".AMP."site_id=".$CI->config->item('site_id').$url;
 	}
+	
+	function check_access() {
+		$CI =& get_instance();
+
+		
+		/* super admin is always ok */
+		
+		if($CI->session->userdata['group_id'] == 1) {
+			return true;
+		}
+
+
+		/* check if member module is enabled */
+		$CI->db->where('module_name', "Member");
+		$CI->db->from('modules');
+		
+		
+		if($CI->db->count_all_results() != 1) {
+			return false;
+		}
+		
+		/* get mini cp module id */
+		$CI->db->where('module_name', "Minicp");
+		$query = $CI->db->get('modules');
+		
+		if ($query->num_rows() != 1)
+		{
+			return false;
+		} else {
+		   $minicp_mod = $query->row(); 
+		}
+		
+		$query->free_result();
+		
+
+		
+		if($CI->session->userdata['can_access_cp'] === "y") {
+			/* check that the member group this user belongs to has access to this module */
+			$CI->db->where('group_id', $CI->session->userdata['group_id']);
+			$CI->db->where('module_id', $minicp_mod->module_id);
+			$CI->db->from('module_member_groups');
+			
+			if($CI->db->count_all_results() != 1) {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+		
+		return true;
+	}
 }

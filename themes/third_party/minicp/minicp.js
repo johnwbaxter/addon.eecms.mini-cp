@@ -1,7 +1,9 @@
 var minicp_autocomplete;
 
 $(document).ready(function() {
-
+	
+	$('body').css('padding-top', 50);
+	
 	$('.minicp a.disabled').css('opacity', 0.4);
 
 
@@ -36,7 +38,7 @@ $(document).ready(function() {
 		$('.minicp .active').removeClass('active');
 		$( "#minicp-jquery" ).autocomplete("search");
 		el.animate({
-		    width: ['200', 'easeOutCubic'],
+		    width: ['260', 'easeOutCubic'],
 		  }, 400, function() {
 		    // Animation complete.
 		    if($($("#minicp-search-results ul")[0]).css('display') == "block") {

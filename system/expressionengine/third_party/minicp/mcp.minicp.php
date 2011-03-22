@@ -18,9 +18,101 @@ class Minicp_mcp {
 	{
 		/* Make a local reference to the ExpressionEngine super object */
 		$this->EE =& get_instance();
+		
+		$this->EE->cp->set_variable('cp_page_title', "Mini CP");	
 	}
+	
+	function index() {
+		
+		$this->EE->load->model('minicp_model');
+			
+		
+		
+		$qt = $this->EE->session->userdata['quick_tabs'];
+		$i=1;
+		$qts = array();
+		if ($qt != '')
+		{
+			foreach (explode("\n", $qt ) as $row)
+			{
+				$x = explode('|', $row);
+
+				$qts[$i]['title'] = (isset($x['0'])) ? $x['0'] : '';
+				$qts[$i]['link'] = (isset($x['1'])) ? $x['1'] : '';
+				$qts[$i]['order'] = (isset($x['2'])) ? $x['2'] : '';
+
+				$i++;
+			}
+		}
+		$this->data['quick_tabs'] = $qts;
+		$this->data['save_toolbar_action'] = BASE.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=minicp'.AMP.'method=save_toolbar';
+		
+		$toolbar = $this->EE->minicp_model->get_toolbar();
+		$this->data['init_enabled'] = $toolbar->enabled;
+		$this->data['init_left'] = $toolbar->left_links;
+		$this->data['init_right'] = $toolbar->right_links;
+		
+		$this->_styles();
+		$this->_javascripts();
+		
+		return $this->EE->load->view('index', $this->data, true);
+	}
+	
+	
+	
+	function save_toolbar() {
+		
+		$this->EE->load->model('minicp_model');
+		
+		$member_id = $this->EE->session->userdata['member_id'];
+		
+		if($member_id > 0) {
+
+			$enabled = $this->EE->input->get('enabled');
+
+			if($enabled) {
+				$enabled = 1;
+			} else {
+				$enabled = 0;
+			}
+			
+			$left = $this->EE->input->get('left');
+			$right = $this->EE->input->get('right');
+			
+			$left = trim($left, ",");
+			$right = trim($right, ",");
+			
+			$this->EE->minicp_model->set_toolbar($enabled, $left, $right);
+		}
+		
+
+		exit();	
+	}
+	
+
+	// --------------------------------------------------------------------
 
 	
+	/* theme url */
+	private function _theme_url()
+	{
+		$url = $this->EE->config->item('theme_folder_url')."third_party/minicp/";
+		return $url;
+	}		
+	
+	// --------------------------------------------------------------------
+
+	private function _styles() /* ok */
+	{
+		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="'.$this->_theme_url().'minicp.css" />');
+	}
+	
+	// --------------------------------------------------------------------
+
+	private function _javascripts() /* ok */
+	{
+		$this->EE->cp->add_to_head('<script type="text/javascript" src="'.$this->_theme_url().'minicp-cp.js"></script>');
+	}
 }
 
 

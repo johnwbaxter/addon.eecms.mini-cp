@@ -32,13 +32,13 @@ class Minicp {
 		
 		$this->return_data = $r;
 	}
-	
+
 	function search() {	
 		
 		$terms = $this->EE->input->get('term');
 		
 		$this->EE->db->like('title', $terms); 
-		$this->EE->db->limit(20);
+		$this->EE->db->limit(8);
 		$query = $this->EE->db->get('channel_titles');
 		
 		$r = array();
@@ -69,10 +69,8 @@ class Minicp {
 	}
 	
 	function widget() {
-		
-		if($this->EE->session->userdata['can_access_cp'] === "y" || $this->EE->session->userdata['group_id'] === "1") {
-
-		} else {
+			
+		if(!$this->EE->minicp_lib->check_access()) {
 			return "";
 		}
 		
@@ -100,39 +98,41 @@ class Minicp {
 		
 		$search_action_id = $this->EE->db->where(array('class' => 'Minicp', 'method' => 'search'))->get('actions')->row('action_id'); 
 		
-		$r = '
 		
-		<div class="minicp">
-			<ul class="left">';
-			
-				$r .= '<li><a';
-				if($entry_id) {
-					$r .= ' href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'"';
-				} else {
-					$r .= ' href="#" class="disabled"';
-				}
-				$r .= '>Edit Page</a></li>';
-
-				$r .= '
+		$quick_links = array();
+		
+		/* 0 : Edit Page */
+		$quick_links[0] = '<li><a';
+		if($entry_id) {
+			$quick_links[0] .= ' href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'"';
+		} else {
+			$quick_links[0] .= ' href="#" class="disabled"';
+		}
+		$quick_links[0] .= '>Edit Entry</a></li>';
+		
+		/* 1 : New Page */
+		$quick_links[1] = '
 				<li class="more">
-					<a href="#">New Page<span></span></a>
+					<a href="#">New Entry<span></span></a>
 					<div class="channels">
 						<ul>';
 							foreach($channels as $c) {
-								$r .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$c->channel_id).'">'.$c->channel_title.'</a></li>';
+								$quick_links[1] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$c->channel_id).'">'.$c->channel_title.'</a></li>';
 							}
-							$r .= '
+							$quick_links[1] .= '
 						</ul>
 						<div class="box-arrow"></div>
 					</div>
 				
-				</li>
-				
+				</li>';
+		
+		/* 2 : Search */
+		$quick_links[2] = '
 				<li class="search ui-widget more">
 					<div class="search-middle">
 					<div class="search-left">
 					<div class="search-right">
-						<input type="text" id="minicp-jquery" rel="/?ACT='.$search_action_id.'" value="" alt="Search entries..." />
+						<input type="text" class="input" id="minicp-jquery" rel="/?ACT='.$search_action_id.'" value="" alt="Search entries..." />
 					</div>
 					</div>
 					</div>
@@ -141,22 +141,22 @@ class Minicp {
 						<div class="box-arrow"></div>
 
 					</div>
-				</li>
-			</ul>
-			<ul class="right">
-				';
+				</li>';
 				
-				if($this->EE->session->userdata['can_moderate_comments'] == "y") {
-					$r .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p').'">Comments';
-					if($nb_comments > 0) {
-						$r .= ' <strong>'.$nb_comments.'</strong>';
-					}
-					$r .= '</a></li>';
-				}
-				
-				$r .= '
-				
-				<li><a href="'.$base.AMP.'D=cp&C=homepage">Control Panel</a></li>
+		/* 3 : */
+		if($this->EE->session->userdata['can_moderate_comments'] == "y") {
+			$quick_links[3] = '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p').'">Comments';
+			if($nb_comments > 0) {
+				$quick_links[3] .= ' <strong>'.$nb_comments.'</strong>';
+			}
+			$quick_links[3] .= '</a></li>';
+		}
+
+		/* 4 : */
+		$quick_links[4] = '<li><a href="'.$base.AMP.'D=cp&C=homepage">Control Panel</a></li>';
+		
+		/* 5 : */
+		$quick_links[5] = '
 				<li class="more">
 					<a href="#">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
 					<div class="account">
@@ -167,11 +167,37 @@ class Minicp {
 						<div class="box-arrow"></div>
 					
 					</div>
-				</li>
-			</ul>
+				</li>';
+
+		
+		/* toolbar */
+		$this->EE->load->model('minicp_model');
+		$toolbar = $this->EE->minicp_model->get_toolbar();
+		
+		$toolbar_left 	= explode(",", $toolbar->left_links);
+		$toolbar_right 	= explode(",", $toolbar->right_links);
+		
+		if(!$toolbar->enabled) {
+			return "";
+		}
+		
+		$r = '
+		
+		<div id="minicp-widget" class="minicp">
+			<ul class="minicp-left">';
+			
+			foreach($toolbar_left as $v) {
+				$r .= $quick_links[$v];
+			}
+
+		$r.='</ul>';
+		$r.='<ul class="minicp-right">';
+			foreach($toolbar_right as $v) {
+				$r .= $quick_links[$v];
+			}
+		$r.='</ul>
+			<div class="minicp-clear"></div>
 		</div>
-		
-		
 		';
 		
 		return $r;
@@ -179,13 +205,12 @@ class Minicp {
 	
 	
 	function javascripts() {
+		$this->EE->load->model('minicp_model');
+		$toolbar = $this->EE->minicp_model->get_toolbar();
 	
-		if($this->EE->session->userdata['can_access_cp'] === "y" || $this->EE->session->userdata['group_id'] === "1") {
-
-		} else {
+		if(!$this->EE->minicp_lib->check_access() || !$toolbar->enabled) {
 			return "";
 		}
-	
 	
 		if(isset($this->EE->TMPL)) {
 			$jquery = $this->EE->TMPL->fetch_param('jquery');
@@ -205,12 +230,12 @@ class Minicp {
 	}
 	
 	function styles() {
-		if($this->EE->session->userdata['can_access_cp'] === "y" || $this->EE->session->userdata['group_id'] === "1") {
-
-		} else {
+		$this->EE->load->model('minicp_model');
+		$toolbar = $this->EE->minicp_model->get_toolbar();
+		
+		if(!$this->EE->minicp_lib->check_access() || !$toolbar->enabled) {
 			return "";
 		}
-	
 
 	
 		return '<link rel="stylesheet" href="'.$this->theme_url().'minicp.css" type="text/css" />';

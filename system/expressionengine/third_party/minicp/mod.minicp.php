@@ -28,8 +28,6 @@ class Minicp {
 		$r .= $this->javascripts();
 		$r .= $this->styles();
 		
-		
-		
 		$this->return_data = $r;
 	}
 
@@ -180,35 +178,44 @@ class Minicp {
 		if(!$toolbar->enabled) {
 			return "";
 		}
-		
+
 		$r = '
 		
 		<div id="minicp-widget" class="minicp">
 			<ul class="minicp-left">';
 			
 			foreach($toolbar_left as $v) {
+				if(isset($quick_links[$v])) {
 				$r .= $quick_links[$v];
+				}
 			}
 
 		$r.='</ul>';
 		$r.='<ul class="minicp-right">';
 			foreach($toolbar_right as $v) {
-				$r .= $quick_links[$v];
+				if(isset($quick_links[$v])) {
+				
+					$r .= $quick_links[$v];
+				}
 			}
 		$r.='</ul>
 			<div class="minicp-clear"></div>
 		</div>
 		';
 		
+
+
 		return $r;
 	}
 	
 	
 	function javascripts() {
+
 		$this->EE->load->model('minicp_model');
 		$toolbar = $this->EE->minicp_model->get_toolbar();
 	
 		if(!$this->EE->minicp_lib->check_access() || !$toolbar->enabled) {
+
 			return "";
 		}
 	
@@ -217,14 +224,14 @@ class Minicp {
 			$jqueryui = $this->EE->TMPL->fetch_param('jqueryui');
 			$r = "";
 			if($jquery == "yes") {
-				$r .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>';
+				$r .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>';
 			}
 			
 			if($jqueryui == "yes") {
-				$r .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>';
+				$r .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>';
 				
 			}
-			$r .= '<script type="text/javascript" src="'.$this->theme_url().'minicp.js"></script>';
+			$r .= '<script type="text/javascript" src="'.$this->theme_url().'minicp.js?v1.4"></script>';
 			return $r;
 		}
 	}
@@ -238,7 +245,7 @@ class Minicp {
 		}
 
 	
-		return '<link rel="stylesheet" href="'.$this->theme_url().'minicp.css" type="text/css" />';
+		return '<link rel="stylesheet" href="'.$this->theme_url().'minicp.css?v1.4" type="text/css" />';
 	}
 	
 	

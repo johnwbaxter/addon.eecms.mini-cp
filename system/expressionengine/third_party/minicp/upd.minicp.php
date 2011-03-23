@@ -50,6 +50,25 @@ class Minicp_upd {
 		
 		
 		
+		$this->_create_tables();
+		
+		
+		
+		/* Action : Ajax Search  */
+		
+		$data = array(
+			'class'		=> 'Minicp' ,
+			'method'	=> 'search'
+		);
+		
+		$this->EE->db->insert('actions', $data);
+
+
+		return TRUE;
+
+	}
+	
+	function _create_tables() {
 		/* Mini CP Table : Toolbars */
 		
 		$fields = array(
@@ -70,32 +89,17 @@ class Minicp_upd {
 		
 		
 		
-		/* Mini CP Table : Toolbars */
+		/* Mini CP Table : Preferences */
 		
 		$fields = array(
-			'key'	=> array('type' => 'varchar', 'constraint' => '250', 'null' => TRUE, 'default' => NULL),
-			'value'	=> array('type'	=> 'text')
+			'pref_key'	=> array('type' => 'varchar', 'constraint' => '250', 'null' => TRUE, 'default' => NULL),
+			'pref_value'	=> array('type'	=> 'text')
 		);
 	
 		$this->EE->dbforge->add_field($fields);
-		$this->EE->dbforge->add_key('key', TRUE);
+		$this->EE->dbforge->add_key('pref_key', TRUE);
 	
 		$this->EE->dbforge->create_table('minicp_preferences');
-		
-		
-		
-		/* Action : Ajax Search  */
-		
-		$data = array(
-			'class'		=> 'Minicp' ,
-			'method'	=> 'search'
-		);
-		
-		$this->EE->db->insert('actions', $data);
-
-
-		return TRUE;
-
 	}
 	
 	
@@ -160,6 +164,9 @@ class Minicp_upd {
 			);
 			$this->EE->db->where('module_name', "Minicp");
 			$this->EE->db->update('modules', $data);
+			
+			$this->_create_tables();
+			
 		}
 
 		

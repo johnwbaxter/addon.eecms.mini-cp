@@ -51,7 +51,7 @@ class Minicp_lib {
 
 		
 		/* super admin is always ok */
-		
+
 		if($CI->session->userdata['group_id'] == 1) {
 			return true;
 		}

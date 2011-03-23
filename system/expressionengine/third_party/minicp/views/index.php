@@ -1,11 +1,3 @@
-<!--
-
-<?=$init_enabled?><br />
-<?=$init_left?><br />
-<?=$init_right?><br />
--->
-
-
 <?
 $items = array(
 	0 => '	<li rel="0"><a href="#">Edit Entry</a></li> ',
@@ -87,8 +79,6 @@ foreach($items as $k => $v) {
 		</ul>
 		<div class="clear"></div>
 	</div> 
-
-	
 	<div class="minicp-clearleft"></div>
 	
 	
@@ -104,32 +94,8 @@ foreach($items as $k => $v) {
 			</ul>
 			<div class="minicp-clearleft"></div>
 		</div>
-	</div>	
-	
+	</div>
 	<div class="minicp-clearleft"></div>
 
 	<h3 class="center">Drag &amp; Drop your favorite items to your Mini CP Toolbar</h3>
 </div>
-
-<!--
-
-<li><input type="checkbox" /> <strong>Navee</strong>		Navee compatibility will make navigations appear in Mini CP</li>
-<li><input type="checkbox" /> <strong>Brilliant Retail</strong>		The Quick Tabs you defined will appear in Mini CP</li>
-<li><input type="checkbox" /> <strong>Quick Tabs</strong>		The Quick Tabs you defined will appear in Mini CP</li>
-
--->
-
-
-
-
-
-<!--
-
-<ul>
-<?
-foreach($quick_tabs as $qt) {
-	echo '<li>'.$qt['title'].'</li>';
-}
-?>
-</ul>
--->

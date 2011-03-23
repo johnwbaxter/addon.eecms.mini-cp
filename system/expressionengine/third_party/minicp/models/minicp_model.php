@@ -26,7 +26,7 @@ class Minicp_model extends CI_Model {
 				"right_links" => $right
 			);
 			
-			return $this->db->insert($this->db->dbprefix('minicp_toolbars'), $data);
+			return $this->db->insert('minicp_toolbars', $data);
 		}
 		return false;
 
@@ -57,21 +57,21 @@ class Minicp_model extends CI_Model {
 	/* Preferences */
 	
 	function set_preference($key, $value) {
-		$this->db->where('key', $key);
+		$this->db->where('pref_key', $key);
 		$this->db->delete('minicp_preferences');
 		$query = $this->db->query("INSERT INTO `".$this->db->dbprefix('minicp_preferences')."` (`key`, `value`) VALUES ('".$key."', '".$value."');");
 		return $query;
 	}
 	
 	function get_preference($key) {
-		$this->db->where('key', $key);
+		$this->db->where('pref_key', $key);
 		$query = $this->db->get('minicp_preferences');
 		
 		if ($query->num_rows() > 0)
 		{
 		   $row = $query->row(); 
 		
-		   return $row->value;
+		   return $row->pref_value;
 
 		}
 		

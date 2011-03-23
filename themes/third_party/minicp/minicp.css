@@ -1,6 +1,8 @@
 /* @override 
 	http://eeaddons.dukt/themes/third_party/minicp/minicp.css
 	http://eeaddons.dukt/themes/third_party/minicp/minicp-cp.css
+	http://dukt.local//themes/third_party/minicp/minicp.css
+	http://dukt.local//themes/third_party/minicp/minicp.css?v1.4
 */
 
 /* @group Common */
@@ -21,6 +23,7 @@
 	
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#35464F', endColorstr='#203038',GradientType=0 ); /* ie */
 	position:relative;
+	white-space: nowrap;
 }
 
 .minicp a.disabled {
@@ -150,7 +153,7 @@
 
 #minicp-search-results {
 	position: absolute;
-	right: 0;
+	left: 0;
 }
 
 #minicp-search-results .box-arrow {
@@ -431,9 +434,8 @@ border-bottom-left-radius: 5px !important;
 
 .minicp-dropzone {
 	margin: 0;
-	min-width: 100px;
+	width: 100%;
 	min-height: 43px;
-	margin-right: 160px;
 
 }
 

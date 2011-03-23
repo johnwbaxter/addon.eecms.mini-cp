@@ -22,29 +22,12 @@ class Minicp_mcp {
 		$this->EE->cp->set_variable('cp_page_title', "Mini CP");	
 	}
 	
+	// --------------------------------------------------------------------
+	
 	function index() {
 		
 		$this->EE->load->model('minicp_model');
-			
-		
-		
-		$qt = $this->EE->session->userdata['quick_tabs'];
-		$i=1;
-		$qts = array();
-		if ($qt != '')
-		{
-			foreach (explode("\n", $qt ) as $row)
-			{
-				$x = explode('|', $row);
 
-				$qts[$i]['title'] = (isset($x['0'])) ? $x['0'] : '';
-				$qts[$i]['link'] = (isset($x['1'])) ? $x['1'] : '';
-				$qts[$i]['order'] = (isset($x['2'])) ? $x['2'] : '';
-
-				$i++;
-			}
-		}
-		$this->data['quick_tabs'] = $qts;
 		$this->data['save_toolbar_action'] = BASE.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=minicp'.AMP.'method=save_toolbar';
 		
 		$toolbar = $this->EE->minicp_model->get_toolbar();
@@ -58,7 +41,7 @@ class Minicp_mcp {
 		return $this->EE->load->view('index', $this->data, true);
 	}
 	
-	
+	// --------------------------------------------------------------------
 	
 	function save_toolbar() {
 		
@@ -88,7 +71,6 @@ class Minicp_mcp {
 
 		exit();	
 	}
-	
 
 	// --------------------------------------------------------------------
 
@@ -102,14 +84,14 @@ class Minicp_mcp {
 	
 	// --------------------------------------------------------------------
 
-	private function _styles() /* ok */
+	private function _styles()
 	{
 		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="'.$this->_theme_url().'minicp.css" />');
 	}
 	
 	// --------------------------------------------------------------------
 
-	private function _javascripts() /* ok */
+	private function _javascripts()
 	{
 		$this->EE->cp->add_to_head('<script type="text/javascript" src="'.$this->_theme_url().'minicp-cp.js"></script>');
 	}

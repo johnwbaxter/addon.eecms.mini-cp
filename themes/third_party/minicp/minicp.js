@@ -33,20 +33,23 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	
+	
 	$('.minicp .search input').focus(function() {
 		var el = $(this);
 		$('.minicp .active').removeClass('active');
 		$( "#minicp-jquery" ).autocomplete("search");
 		el.animate({
-		    width: ['260', 'easeOutCubic'],
-		  }, 400, function() {
+		    width: ['260', 'easeOutCubic']
+		  },400, function() {
 		    // Animation complete.
 		    if($($("#minicp-search-results ul")[0]).css('display') == "block") {
 		    	$('.search').addClass('active');
 		    }
 		  });
+		  
 		el.parent().parent().parent().parent().animate({
-		    opacity: 1,
+		    opacity: 1
 		  }, 400, function() {
 		    // Animation complete.
 		  });
@@ -66,13 +69,13 @@ $(document).ready(function() {
 	$('.minicp .search input').blur(function() {
 		var el = $(this);
 		el.animate({
-		    width: ['100', 'easeOutCubic'],
+		    width: ['100', 'easeOutCubic']
 		  }, 400, function() {
 		    // Animation complete.
 		  });
 		  
 		el.parent().parent().parent().parent().animate({
-		    opacity: 0.6,
+		    opacity: 0.6
 		  }, 400, function() {
 		    // Animation complete.
 		  });
@@ -84,6 +87,7 @@ $(document).ready(function() {
 	/* auto complete */
 
 
+	$( "#minicp-jquery").autocomplete( "destroy" );
 	$( "#minicp-jquery").autocomplete({
 		source: $( "#minicp-jquery" ).attr('rel'),
 		appendTo:"#minicp-search-results",
@@ -102,7 +106,7 @@ $(document).ready(function() {
 			
 			location.href = url;
 		}
-	}).data( "autocomplete" )._renderItem = function( ul, item ) {
+	}).data("autocomplete")._renderItem = function( ul, item ) {
 			return $( "<li></li>" )
 				.data( "item.autocomplete", item )
 				.append( "<a><em>" + item.channel_title + "</em>" + item.entry_title + "</a>" )

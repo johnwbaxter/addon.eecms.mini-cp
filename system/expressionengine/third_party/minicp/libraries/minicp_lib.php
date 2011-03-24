@@ -7,7 +7,13 @@ class Minicp_lib {
 		$CI =& get_instance();
 
 		$base = $CI->config->item('cp_url');
+		
+		if(strpos($base, ".php") === false) {
+			$base .= "index.php";
+		}
+		
 		$base .= "?S=".$CI->session->userdata('session_id');
+		
 
 		if($CI->config->item('multiple_sites_enabled') != "y") {
 			return $base.AMP.$url;

@@ -135,7 +135,7 @@ class Minicp {
 				
 		/* 3 : */
 		if($this->EE->session->userdata['can_moderate_comments'] == "y") {
-			$quick_links[3] = '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p').'">Comments';
+			$quick_links[3] = '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=comment'.AMP.'status=p').'">Comments';
 			if($nb_comments > 0) {
 				$quick_links[3] .= ' <strong>'.$nb_comments.'</strong>';
 			}
@@ -151,7 +151,7 @@ class Minicp {
 					<a href="#" class="a1">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
 
 					<ul class="ul2">
-						<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=myaccount').'">My Account</a></li>
+						<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=myaccount').'">My Account</a></li>
 						<li><a href="?ACT='.$logout_action_id.'">Logout</a></li>
 					</ul>
 				</li>';

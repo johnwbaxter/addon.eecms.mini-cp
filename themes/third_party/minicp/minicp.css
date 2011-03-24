@@ -47,6 +47,7 @@
 	margin-right: 8px !important;
 	position: relative;
 	padding-bottom: 11px;
+	line-height: 1.5em !important;
 }
 
 .minicp-left li.li1.active {
@@ -142,19 +143,21 @@
 	color: #fff;
 	padding: 2px 9px;
 	white-space: nowrap;
+	text-decoration: none;
 }
 
 .minicp .a1 strong {
 	background: red;
 	-moz-border-radius: 16px;
 	border-radius: 46px;
-	padding: 1px 3px;
+	padding: 0px 4px;
 	position: absolute;
 	top: -5px;
 	right: -6px;
 	border: 2px solid #fff;
 	font-weight: bold;
 	font-size: 10px;
+	line-height: 1.4em;
 }
 	/*border: 2px solid rgba(0,0,0,0.77);*/
 
@@ -230,6 +233,7 @@
 	display: block;
 	padding: 6px 10px;
 	color: #E7003C;
+	text-decoration: none;
 }
 
 

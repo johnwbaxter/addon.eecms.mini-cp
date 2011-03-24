@@ -343,8 +343,10 @@
 	background: #f8fafb;
 	border: 1px dashed #8b9ba6;
 	padding: 10px;
+	padding-bottom: 0;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
+	min-height: 35px;
 	
 }
 

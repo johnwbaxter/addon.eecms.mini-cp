@@ -100,50 +100,42 @@ class Minicp {
 		$quick_links = array();
 		
 		/* 0 : Edit Page */
-		$quick_links[0] = '<li><a';
+		$quick_links[0] = '<li class="li1"><a';
 		if($entry_id) {
-			$quick_links[0] .= ' href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'"';
+			$quick_links[0] .= ' class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'"';
 		} else {
-			$quick_links[0] .= ' href="#" class="disabled"';
+			$quick_links[0] .= ' href="#" class="a1 disabled"';
 		}
 		$quick_links[0] .= '>Edit Entry</a></li>';
 		
 		/* 1 : New Page */
-		$quick_links[1] = '
-				<li class="more">
-					<a href="#">New Entry<span></span></a>
-					<div class="channels">
-						<ul>';
-							foreach($channels as $c) {
-								$quick_links[1] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$c->channel_id).'">'.$c->channel_title.'</a></li>';
-							}
-							$quick_links[1] .= '
-						</ul>
-						<div class="box-arrow"></div>
-					</div>
+		$quick_links[1] = '<li class="li1 more"><a class="a1" href="#">New Entry<span></span></a><ul class="ul2">';
+						foreach($channels as $c) {
+							$quick_links[1] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$c->channel_id).'">'.$c->channel_title.'</a></li>';
+						}
+						$quick_links[1] .= '</ul>
+
 				
 				</li>';
 		
 		/* 2 : Search */
 		$quick_links[2] = '
-				<li class="search ui-widget more">
-					<div class="search-middle">
-					<div class="search-left">
-					<div class="search-right">
+				<li class="li1 search ui-widget more">
+					<div class="search-input">
 						<input type="text" class="input" id="minicp-jquery" rel="/?ACT='.$search_action_id.'" value="" alt="Search entries..." />
 					</div>
-					</div>
-					</div>
 					
-					<div id="minicp-search-results" rel="'.$base.AMP.'D=cp&C=content_publish&M=entry_form">
-						<div class="box-arrow"></div>
-
+					<div class="box-arrow">
+						<div id="minicp-search-results" rel="'.$base.AMP.'D=cp&C=content_publish&M=entry_form">
+							
+	
+						</div>
 					</div>
 				</li>';
 				
 		/* 3 : */
 		if($this->EE->session->userdata['can_moderate_comments'] == "y") {
-			$quick_links[3] = '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p').'">Comments';
+			$quick_links[3] = '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=addons_modules&M=show_module_cp&module=comment&status=p').'">Comments';
 			if($nb_comments > 0) {
 				$quick_links[3] .= ' <strong>'.$nb_comments.'</strong>';
 			}
@@ -151,20 +143,17 @@ class Minicp {
 		}
 
 		/* 4 : */
-		$quick_links[4] = '<li><a href="'.$base.AMP.'D=cp&C=homepage">Control Panel</a></li>';
+		$quick_links[4] = '<li class="li1"><a class="a1" href="'.$base.AMP.'D=cp&C=homepage">Control Panel</a></li>';
 		
 		/* 5 : */
 		$quick_links[5] = '
-				<li class="more">
-					<a href="#">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
-					<div class="account">
-						<ul>
-							<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=myaccount').'">My Account</a></li>
-							<li><a href="?ACT='.$logout_action_id.'">Logout</a></li>
-						</ul>
-						<div class="box-arrow"></div>
-					
-					</div>
+				<li class="li1 more">
+					<a href="#" class="a1">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
+
+					<ul class="ul2">
+						<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp&C=myaccount').'">My Account</a></li>
+						<li><a href="?ACT='.$logout_action_id.'">Logout</a></li>
+					</ul>
 				</li>';
 
 		
@@ -182,24 +171,29 @@ class Minicp {
 		$r = '
 		
 		<div id="minicp-widget" class="minicp">
-			<ul class="minicp-left">';
-			
-			foreach($toolbar_left as $v) {
-				if(isset($quick_links[$v])) {
-				$r .= $quick_links[$v];
-				}
-			}
-
-		$r.='</ul>';
-		$r.='<ul class="minicp-right">';
-			foreach($toolbar_right as $v) {
-				if(isset($quick_links[$v])) {
+			<div class="minicp-wrap">
+				<div id="minicp-widget-pad">
+					<ul class="ul1 minicp-left">';
+					
+					foreach($toolbar_left as $v) {
+						if(isset($quick_links[$v])) {
+						$r .= $quick_links[$v];
+						}
+					}
+		
+				$r.='</ul>';
+				$r.='<ul class="ul1 minicp-right">';
+					foreach($toolbar_right as $v) {
+						if(isset($quick_links[$v])) {
+						
+							$r .= $quick_links[$v];
+						}
+					}
+				$r.='</ul>
+					<div class="minicp-clear"></div>
 				
-					$r .= $quick_links[$v];
-				}
-			}
-		$r.='</ul>
-			<div class="minicp-clear"></div>
+				</div>
+			</div>
 		</div>
 		';
 		
@@ -244,8 +238,11 @@ class Minicp {
 			return "";
 		}
 
-	
-		return '<link rel="stylesheet" href="'.$this->theme_url().'minicp.css?v1.4" type="text/css" />';
+  		$r = "";
+  		$r .= '<link rel="stylesheet" href="'.$this->theme_url().'minicp.css?v1.4" type="text/css" />';
+  		$r .= '<!--[if gte IE 7]><link rel="stylesheet" type="text/css" media="screen" href="'.$this->theme_url().'minicp-ie.css?v1.4"  /><![endif]-->';
+  		
+		return $r;
 	}
 	
 	

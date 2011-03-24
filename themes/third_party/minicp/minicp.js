@@ -2,6 +2,10 @@ var minicp_autocomplete;
 
 $(document).ready(function() {
 	
+	$('.minicp li.search').css('position', 'static');
+	
+	$('.minicp-left li.li1.active, .minicp-right li.li1.active').css('background', 'blue !important');
+	
 	$('body').css('padding-top', 50);
 	
 	$('.minicp a.disabled').css('opacity', 0.4);
@@ -48,7 +52,7 @@ $(document).ready(function() {
 		    }
 		  });
 		  
-		el.parent().parent().parent().parent().animate({
+		el.parent().parent().animate({
 		    opacity: 1
 		  }, 400, function() {
 		    // Animation complete.
@@ -74,7 +78,7 @@ $(document).ready(function() {
 		    // Animation complete.
 		  });
 		  
-		el.parent().parent().parent().parent().animate({
+		el.parent().parent().animate({
 		    opacity: 0.6
 		  }, 400, function() {
 		    // Animation complete.
@@ -92,28 +96,24 @@ $(document).ready(function() {
 		source: $( "#minicp-jquery" ).attr('rel'),
 		appendTo:"#minicp-search-results",
 		open: function() {
-			$(this).parent().parent().parent().parent().addClass('active');
+			$(this).parent().parent().addClass('active');
 		},
 		close: function() {
-			$(this).parent().parent().parent().parent().removeClass('active');
+			$(this).parent().parent().removeClass('active');
 		
 		},
 		select:function(event, ui) {
-			
-			//console.log(ui.item.id);
-			//console.log(ui.item.channel_id);
+		
 			var url = ui.item.cp_link;
 			
 			location.href = url;
 		}
 	}).data("autocomplete")._renderItem = function( ul, item ) {
-			return $( "<li></li>" )
-				.data( "item.autocomplete", item )
-				.append( "<a><em>" + item.channel_title + "</em>" + item.entry_title + "</a>" )
-				.appendTo( ul );
-		};
-		
-	//minicp_autocomplete.search();
+		return $( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( "<a><em>" + item.channel_title + "</em>" + item.entry_title + "</a>" )
+			.appendTo( ul );
+	};
 
 
 });

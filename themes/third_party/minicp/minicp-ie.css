@@ -1,0 +1,16 @@
+.minicp .ui-autocomplete-input {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#minicp-widget {
+	padding-bottom: 2px;
+}
+.minicp .a1,
+.minicp .search-input {
+	border: 1px solid #142227;
+}
+
+.minicp .search-input input {
+	padding-top: 2px;
+}

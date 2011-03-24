@@ -1,26 +1,17 @@
 <?
 $items = array(
-	0 => '	<li rel="0"><a href="#">Edit Entry</a></li> ',
-	1 => '	<li rel="1" class="more"><a href="#">New Entry<span></span></a></li>',
+	0 => '	<li class="li1" rel="0"><a class="a1" href="#">Edit Entry</a></li> ',
+	1 => '	<li class="li1 more" rel="1"><a class="a1" href="#">New Entry<span></span></a></li>',
 	2 => '
-			<li rel="2" class="search ui-widget more"> 
-				<div class="search-middle"> 
-				<div class="search-left"> 
-				<div class="search-right"> 
+			<li rel="2" class="li1 search ui-widget more"> 
+				<div class="search-input"> 
 					<div class="input"></div> 
-				</div> 
-				</div> 
-				</div> 
-				
-				<div id="minicp-search-results"> 
-					<div class="box-arrow"></div> 
-	
-				</div> 
+				</div>
 			</li> 
 	',
-	3 => '<li rel="3"><a href="#">Comments <strong>1</strong></a></li> ',
-	4 => '<li rel="4"><a href="#">Control Panel</a></li> ',
-	5 => '<li rel="5" class="more"><a href="#">'.$this->session->userdata['screen_name'].' <span></span></a></li>',
+	3 => '<li class="li1" rel="3"><a class="a1" href="#">Comments <strong>1</strong></a></li> ',
+	4 => '<li class="li1" rel="4"><a class="a1" href="#">Control Panel</a></li> ',
+	5 => '<li class="li1 more" rel="5"><a class="a1" href="#">'.$this->session->userdata['screen_name'].' <span></span></a></li>',
 );
 
 
@@ -65,26 +56,31 @@ foreach($items as $k => $v) {
 	}
 	?> /> Enable your Mini CP Toolbar</label></h2>
 	
-	<div id="minicp-toolbar" class="minicp"> 
-		
-		<ul class="minicp-left">
-			<?
-			echo $items_left;
-			?>
-		</ul> 
-		<ul class="minicp-right"> 
-			<?
-			echo $items_right;
-			?>
-		</ul>
-		<div class="clear"></div>
+	
+	<div id="minicp-toolbar" class="minicp">
+		<div class="minicp-wrap">
+			<div class="minicp-pad">
+				<ul class="ul1 minicp-left">
+					<?
+					echo $items_left;
+					?>
+				</ul> 
+				<ul class="ul1 minicp-right"> 
+					<?
+					echo $items_right;
+					?>
+				</ul>
+				
+				<div class="minicp-clear"></div>
+			</div>
+		</div>
+		<div class="minicp-clearleft"></div>
 	</div> 
-	<div class="minicp-clearleft"></div>
 	
 	
-	<div id="minicp-nativelinks" class="minicp">
+	<div id="minicp-dropzone" class="minicp">
 		
-		<div class="minicp-dropzone">
+		<div class="zone">
 			<ul>
 				<?
 				foreach($items_unused as $item) {

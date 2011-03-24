@@ -86,14 +86,14 @@ class Minicp_mcp {
 
 	private function _styles()
 	{
-		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="'.$this->_theme_url().'minicp.css" />');
+		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="'.$this->_theme_url().'minicp.css?v1.4" />');
 	}
 	
 	// --------------------------------------------------------------------
 
 	private function _javascripts()
 	{
-		$this->EE->cp->add_to_head('<script type="text/javascript" src="'.$this->_theme_url().'minicp-cp.js"></script>');
+		$this->EE->cp->add_to_head('<script type="text/javascript" src="'.$this->_theme_url().'minicp-cp.js?v1.4"></script>');
 	}
 }
 

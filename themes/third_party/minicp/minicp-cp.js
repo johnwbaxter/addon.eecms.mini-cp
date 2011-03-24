@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+	
 	/* Drag & Drop */
 
 	$( "#minicp-cp ul" ).disableSelection();
@@ -26,7 +28,7 @@ $(document).ready(function() {
 	});
 	
 	function minicp_save_toolbar() {
-		//console.log(minicp_enable.attr('checked'));
+
 		var left_links = "";
 		var right_links = "";
 
@@ -39,10 +41,6 @@ $(document).ready(function() {
 			right_links += $(el).attr('rel')+",";
 		});
 		
-		//console.log('save toolbar', minicp_enable.attr('checked'), left_links, right_links);
-		
-		//console.log(left_links, right_links);
-
 		var enabled_value = 0;
 		if(minicp_enable.attr('checked')) {
 			enabled_value = 1;

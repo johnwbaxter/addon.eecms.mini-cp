@@ -102,6 +102,10 @@ class Minicp {
 		$site_id = $this->EE->config->item('site_id');
 		$base = $this->EE->config->item('cp_url');
 
+		if(strpos($base, ".php") === false) {
+			$base .= "index.php";
+		}
+		
 		$base .= QUERY_MARKER."S=".$this->EE->session->userdata('session_id');
 		
 		/* retrieve action ids */

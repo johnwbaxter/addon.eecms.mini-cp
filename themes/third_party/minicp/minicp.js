@@ -6,7 +6,7 @@ $(document).ready(function() {
 	
 	$('.minicp-left li.li1.active, .minicp-right li.li1.active').css('background', 'blue !important');
 	
-	$('body').css('padding-top', 50);
+	$('body').css('padding-top', 47);
 	
 	$('.minicp a.disabled').css('opacity', 0.4);
 

@@ -83,7 +83,7 @@ class Minicp_mcp {
 	}		
 	
 	// --------------------------------------------------------------------
-
+	
 	private function _styles()
 	{
 		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="'.$this->_theme_url().'minicp.css?v1.4" />');

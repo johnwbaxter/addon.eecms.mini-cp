@@ -7,19 +7,16 @@ class Minicp_lib {
 		$CI =& get_instance();
 
 		$base = $CI->config->item('cp_url');
-		
-		if(strpos($base, ".php") === false) {
-			$base .= "index.php";
-		}
-		
-		$base .= "?S=".$CI->session->userdata('session_id');
-		
+		$base .= QUERY_MARKER."S=".$CI->session->userdata('session_id');
 
+		/* Multi Site Enabled, return URL straight away */
 		if($CI->config->item('multiple_sites_enabled') != "y") {
 			return $base.AMP.$url;
 		}
 		
-		if ( ! $url)
+		
+		/* Multi Site Disabled, rebuild URL with base64 sauce */
+		if (!$url)
 		{
 			$go_to_c = (count($_POST) > 0);
 			$page = '';
@@ -57,7 +54,6 @@ class Minicp_lib {
 
 		
 		/* super admin is always ok */
-
 		if($CI->session->userdata['group_id'] == 1) {
 			return true;
 		}
@@ -66,7 +62,6 @@ class Minicp_lib {
 		/* check if member module is enabled */
 		$CI->db->where('module_name', "Member");
 		$CI->db->from('modules');
-		
 		
 		if($CI->db->count_all_results() != 1) {
 			return false;
@@ -86,8 +81,9 @@ class Minicp_lib {
 		$query->free_result();
 		
 
+		/* check that the the user has access to the control panel */
+		if($CI->session->userdata['can_access_cp'] === "y" && isset($minicp_mod)) {
 		
-		if($CI->session->userdata['can_access_cp'] === "y") {
 			/* check that the member group this user belongs to has access to this module */
 			$CI->db->where('group_id', $CI->session->userdata['group_id']);
 			$CI->db->where('module_id', $minicp_mod->module_id);

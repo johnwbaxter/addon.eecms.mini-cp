@@ -101,16 +101,15 @@ class Minicp {
 		/* define base url */
 		$site_id = $this->EE->config->item('site_id');
 		$base = $this->EE->config->item('cp_url');
-		/*
-		if(strpos($base, ".php") === false) {
-			$base .= "index.php";
-		}
-		*/
+
 		$base .= QUERY_MARKER."S=".$this->EE->session->userdata('session_id');
 		
 		/* retrieve action ids */
+		$site_index = $this->EE->functions->fetch_site_index(0, 1);
 		$logout_action_id = $this->EE->db->where(array('class' => 'Member', 'method' => 'member_logout'))->get('actions')->row('action_id');
 		$search_action_id = $this->EE->db->where(array('class' => 'Minicp', 'method' => 'search'))->get('actions')->row('action_id'); 
+		$search_action_url = $site_index.QUERY_MARKER."ACT=".$search_action_id;
+		$logout_action_url = $site_index.QUERY_MARKER."ACT=".$logout_action_id;
 		
 		/* count pending comments */
 		$nb_comments = $this->EE->db->where(array('status' => 'p', 'site_id' => $site_id))->get('comments')->num_rows();
@@ -216,7 +215,7 @@ class Minicp {
 			$quick_links[2] .= '
 				<li class="li1 search ui-widget more">
 					<div class="search-input">
-						<input type="text" class="input" id="minicp-jquery" rel="/?ACT='.$search_action_id.'" value="" alt="Search entries..." />
+						<input type="text" class="input" id="minicp-jquery" rel="'.$search_action_url.'" value="" alt="Search entries..." />
 					</div>
 					
 					<div class="box-arrow">
@@ -289,7 +288,7 @@ class Minicp {
 					<a class="a1" href="#">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
 						<ul class="ul2">
 							<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=myaccount').'">My Account</a></li>
-							<li><a href="?ACT='.$logout_action_id.'">Logout</a></li>
+							<li><a href="'.$logout_action_url.'">Logout</a></li>
 						</ul>
 				</li>';
 

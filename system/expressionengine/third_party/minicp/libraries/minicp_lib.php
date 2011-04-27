@@ -7,6 +7,9 @@ class Minicp_lib {
 		$CI =& get_instance();
 
 		$base = $CI->config->item('cp_url');
+		if(strpos($base, ".php") === false) {
+			$base .= "index.php";
+		}
 		$base .= QUERY_MARKER."S=".$CI->session->userdata('session_id');
 
 		/* Multi Site Enabled, return URL straight away */

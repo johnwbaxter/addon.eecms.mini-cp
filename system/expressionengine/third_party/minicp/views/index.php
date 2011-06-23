@@ -20,27 +20,33 @@ $items_unused = array();
 $items_left = "";
 $items_right = "";
 
-foreach($items as $k => $v) {
-	if(strpos("$init_left", "$k") !== false) {
+foreach($items as $k => $v)
+{
+	if(strpos("$init_left", "$k") !== false)
+	{
 		$items_left .= $v;
 		array_push($items_used, $k);
-		
-	} elseif(strpos("$init_right", "$k") !== false) {
+	}
+	elseif(strpos("$init_right", "$k") !== false)
+	{
 		$items_right .= $v;
 		array_push($items_used, $k);
-	
 	}
 }
 
-foreach($items as $k => $v) {
+foreach($items as $k => $v)
+{
 	$used = false;
-	foreach($items_used as $item_key) {
-		if($k == $item_key) {
+	foreach($items_used as $item_key)
+	{
+		if($k == $item_key)
+		{
 			$used = true;
 		}
 	}
 	
-	if(!$used) {
+	if(!$used)
+	{
 		array_push($items_unused, $k);
 	}
 }
@@ -51,7 +57,8 @@ foreach($items as $k => $v) {
 
 <div id="minicp-cp" rel="<?=$save_toolbar_action?>">
 	<h2 id="minicp-enable"><label><input type="checkbox" <?
-	if($init_enabled == 1) {
+	if($init_enabled == 1)
+	{
 		echo ' checked="checked"';
 	}
 	?> /> Enable your Mini CP Toolbar</label></h2>
@@ -83,7 +90,8 @@ foreach($items as $k => $v) {
 		<div class="zone">
 			<ul>
 				<?
-				foreach($items_unused as $item) {
+				foreach($items_unused as $item)
+				{
 					echo $items[$item];
 				}
 				?>

@@ -1,12 +1,14 @@
 $(document).ready(function() {
 
-
+	/**
+	 * Drag & Drop
+	 *
+	 * @access	public
+	 * @return	bool
+	 */	
+	$("#minicp-cp ul").disableSelection();
 	
-	/* Drag & Drop */
-
-	$( "#minicp-cp ul" ).disableSelection();
-	
-	$( "#minicp-cp ul" ).sortable({
+	$("#minicp-cp ul").sortable({
 		connectWith: "ul",
 		dropOnEmpty: true,
 		update:function(e,ui) {
@@ -14,22 +16,38 @@ $(document).ready(function() {
 		}
 	});
 
+	// --------------------------------------------------------------------
 
-	var minicp_enable = $($('#minicp-enable').find('input')[0]);
-	var minicp_left = $($('#minicp-cp .minicp-left')[0]);
-	var minicp_right = $($('#minicp-cp .minicp-right')[0]);
+	/**
+	 * Init Toolbar
+	 *
+	 * @access	public
+	 * @return	bool
+	 */
+
+	var minicp_enable 	= $($('#minicp-enable').find('input')[0]);
+	var minicp_left 	= $($('#minicp-cp .minicp-left')[0]);
+	var minicp_right 	= $($('#minicp-cp .minicp-right')[0]);
 	
-	minicp_enable.change(function() {
+	minicp_enable.change(function(){
 		minicp_save_toolbar();
 	});
 	
-	$( "#minicp-cp a" ).click(function() {
+	$("#minicp-cp a").click(function() {
 		return false;
 	});
 	
-	function minicp_save_toolbar() {
+	// --------------------------------------------------------------------
 
-		var left_links = "";
+	/**
+	 * Save toolbar
+	 *
+	 * @access	public
+	 * @return	bool
+	 */	
+	function minicp_save_toolbar()
+	{
+		var left_links 	= "";
 		var right_links = "";
 
 		minicp_left.find('li').each(function(i,el) {
@@ -49,15 +67,16 @@ $(document).ready(function() {
 		$.ajax({
 			url: $('#minicp-cp').attr('rel'),
 			data: {
-				enabled:enabled_value,
-				left:left_links,
-				right:right_links
+				enabled	:	enabled_value,
+				left	:	left_links,
+				right	:	right_links
 			},
 			type:'get'
 		});
-
-
 	}
+
+	// --------------------------------------------------------------------
+
 	
 });
 

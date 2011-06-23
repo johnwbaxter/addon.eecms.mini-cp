@@ -14,11 +14,12 @@ class Minicp_upd {
 
 	var $version = '1.4';
 	
-	/* constructor */
-	
+	/**
+	 * Constructor
+	 *
+	 */
 	function Minicp_upd()
 	{
-		// Make a local reference to the ExpressionEngine super object
 		$this->EE =& get_instance();
 	}
 
@@ -30,14 +31,15 @@ class Minicp_upd {
 	 * @access	public
 	 * @return	bool
 	 */
-	 
 	function install()
 	{
-		/* Load DB Forge */
+		
+		// Load DB Forge
+		
 		$this->EE->load->dbforge();
 		
 		
-		/* Insert Module */
+		// Insert Module
 		
 		$data = array(
 			'module_name' => 'Minicp',
@@ -47,14 +49,11 @@ class Minicp_upd {
 		);
 
 		$this->EE->db->insert('modules', $data);
-		
-		
-		
+
 		$this->_create_tables();
+
 		
-		
-		
-		/* Action : Ajax Search  */
+		// Action : Ajax Search
 		
 		$data = array(
 			'class'		=> 'Minicp' ,
@@ -63,22 +62,31 @@ class Minicp_upd {
 		
 		$this->EE->db->insert('actions', $data);
 
-
 		return TRUE;
 
 	}
 	
-	function _create_tables() {
-		/* Mini CP Table : Toolbars */
+	// --------------------------------------------------------------------
+
+	/**
+	 * Create tables
+	 *
+	 * @access	private
+	 * @return	bool
+	 */
+	function _create_tables()
+	{
+		
+		// Mini CP Table : Toolbars
 		
 		$fields = array(
-						'id'			=> array('type' 		 => 'int',
+						'id'				=> array('type' 		 => 'int',
 													'constraint'	 => '10',
 													'unsigned'		 => TRUE,
 													'auto_increment' => TRUE),
 						'user_id'			=> array('type' 		 => 'int',
 													'constraint'	 => '10'),
-						'enabled'		=> array('type' => 'int', 'constraint' => '1'),
+						'enabled'			=> array('type' => 'int', 'constraint' => '1'),
 						'left_links'		=> array('type' => 'text'),
 						'right_links'		=> array('type' => 'text'),
 						);
@@ -88,8 +96,7 @@ class Minicp_upd {
 		$this->EE->dbforge->create_table('minicp_toolbars');
 		
 		
-		
-		/* Mini CP Table : Preferences */
+		// Mini CP Table : Preferences
 		
 		$fields = array(
 			'pref_key'	=> array('type' => 'varchar', 'constraint' => '250', 'null' => TRUE, 'default' => NULL),
@@ -98,10 +105,8 @@ class Minicp_upd {
 	
 		$this->EE->dbforge->add_field($fields);
 		$this->EE->dbforge->add_key('pref_key', TRUE);
-	
 		$this->EE->dbforge->create_table('minicp_preferences');
 	}
-	
 	
 	// --------------------------------------------------------------------
 
@@ -111,16 +116,18 @@ class Minicp_upd {
 	 * @access	public
 	 * @return	bool
 	 */
-	 
 	function uninstall()
 	{
 		$this->EE->load->dbforge();
 		
-		/* drop minicp tables */
+		
+		// drop minicp tables
+		
 		$this->EE->dbforge->drop_table('minicp_toolbars');
 		$this->EE->dbforge->drop_table('minicp_preferences');
 		
-		/* uninstall module */
+		
+		// uninstall module
 			
 		$this->EE->db->where('class', 'Minicp');
 		$this->EE->db->delete('actions');
@@ -168,7 +175,6 @@ class Minicp_upd {
 			$this->_create_tables();
 			
 		}
-
 		
 		return TRUE;
 	}

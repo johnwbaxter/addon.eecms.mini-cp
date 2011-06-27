@@ -148,7 +148,7 @@ class Minicp {
 		$logout_action_url = $site_index.QUERY_MARKER."ACT=".$logout_action_id;
 		
 		
-		// count pending comments
+		// count pending comments if comment module installed
 		
 		$nb_comments = 0;
 		

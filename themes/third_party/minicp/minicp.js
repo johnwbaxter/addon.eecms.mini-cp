@@ -86,6 +86,10 @@ $(document).ready(function() {
 		}
 	);
 	
+	$('.minicp .search input').bind("autocompleteopen", function(event, ui) {
+		var width = 290;
+		$('.minicp .ui-autocomplete').width(width);
+	});
 	
 	// search
 	

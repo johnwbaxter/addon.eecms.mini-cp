@@ -169,6 +169,7 @@ class Minicp_upd {
 				'module_name' => 'Minicp',
 				'has_cp_backend' => 'y',
 			);
+			
 			$this->EE->db->where('module_name', "Minicp");
 			$this->EE->db->update('modules', $data);
 			

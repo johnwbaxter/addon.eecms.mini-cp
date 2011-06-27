@@ -4,6 +4,7 @@
 	http://dukt.local//themes/third_party/minicp/minicp.css
 	http://dukt.local//themes/third_party/minicp/minicp.css?v1.4
 	http://dukt.fr//themes/third_party/minicp/minicp.css?v1.4
+	http://devaddons.dukt/themes/third_party/minicp/minicp.css?v1.4
 */
 
 #minicp-widget {
@@ -270,7 +271,7 @@
 	border-radius: 15px;
 	background: #fff;
 	overflow: hidden;
-	padding: 0 10px;
+	padding: 0 14px;
 }
 
 .minicp .box-arrow {

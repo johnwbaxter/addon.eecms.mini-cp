@@ -275,7 +275,7 @@ class Minicp {
 			$quick_links[2] .= '
 				<li class="li1 search ui-widget more">
 					<div class="search-input">
-						<input type="text" class="input" id="minicp-jquery" rel="'.$search_action_url.'" value="" alt="Search entries..." />
+						<input type="text" class="input" name="minicpsearch" id="minicp-jquery" rel="'.$search_action_url.'" value="" alt="Search entries..." />
 					</div>
 					
 					<div class="box-arrow">

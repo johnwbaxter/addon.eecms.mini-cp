@@ -34,46 +34,7 @@ class Minicp_lib {
 		
 		$base .= QUERY_MARKER."S=".$CI->session->userdata('session_id');
 
-		// Multi Site Enabled, return URL straight away
-		
-		if($CI->config->item('multiple_sites_enabled') != "y")
-		{
-			return $base.AMP.$url;
-		}
-		
-		
-		// Multi Site Disabled, rebuild URL with base64 sauce
-		if (!$url)
-		{
-			$go_to_c = (count($_POST) > 0);
-			
-			$page = '';
-
-			foreach($_GET as $key => $val)
-			{
-				if ($key == 'S' OR $key == 'D' OR ($go_to_c && $key != 'C'))
-				{
-					continue;
-				}
-
-				$page .= $key.'='.$val.AMP;
-			}
-
-			if (strlen($page) > 4 && substr($page, -5) == AMP)
-			{
-				$page = substr($page, 0, -5);
-			}
-			
-			$url = $page;
-		}
-		
-		if ($url)
-		{
-			$url = implode('|', explode(AMP, $url));
-			$url = AMP."page=".strtr(base64_encode($url), '+=', '-_');
-		}
-		
-		return $base.AMP."D=cp".AMP."C=sites".AMP."site_id=".$CI->config->item('site_id').$url;
+		return $base.AMP.$url;
 	}
 	
 	// --------------------------------------------------------------------

@@ -106,71 +106,8 @@ class Minicp {
 	
 	// --------------------------------------------------------------------	
 	
-	/**
-	 * Widget
-	 *
-	 * @access	public
-	 * @return	void
-	 */
-	
-	function widget()
+	private function assigned_channels()
 	{
-
-		if(!$this->EE->minicp_lib->check_access())
-		{
-			return "";
-		}
-		
-		// fetch parameters
-		
-		$entry_id = $this->EE->TMPL->fetch_param('entry_id');
-		
-		
-		// define base url
-		
-		$site_id = $this->EE->config->item('site_id');
-		$base = $this->EE->config->item('cp_url');
-
-		if(strpos($base, ".php") === false)
-		{
-			$base .= "index.php";
-		}
-		
-		$base .= QUERY_MARKER."S=".$this->EE->session->userdata('session_id');
-		
-		
-		// retrieve action ids
-		
-		$site_index = $this->EE->functions->fetch_site_index(0, 1);
-		$logout_action_id = $this->EE->db->where(array('class' => 'Member', 'method' => 'member_logout'))->get('actions')->row('action_id');
-		$search_action_id = $this->EE->db->where(array('class' => 'Minicp', 'method' => 'search'))->get('actions')->row('action_id'); 
-		$search_action_url = $site_index.QUERY_MARKER."ACT=".$search_action_id;
-		$logout_action_url = $site_index.QUERY_MARKER."ACT=".$logout_action_id;
-		
-		
-		// count pending comments if comment module installed
-		
-		$nb_comments = 0;
-		
-		if ($this->EE->db->table_exists('comments'))
-		{
-			$nb_comments = $this->EE->db->where(array('status' => 'p', 'site_id' => $site_id))->get('comments')->num_rows();
-		}
-
-
-		// retrieve channel for current entry
-		
-		$this->EE->db->where('entry_id', $entry_id);
-		$channel_id = $this->EE->db->get('channel_titles')->row('channel_id');
-		
-		
-		// retrive site_id for current entry
-		
-		$site_id = $this->EE->db->where('entry_id', $entry_id)->get('channel_titles')->row('site_id');
-		
-	
-		// fetch channel privileges
-		
 		$assigned_channels = array();
 	 
 		if ($this->EE->session->userdata['group_id'] == 1)
@@ -201,9 +138,78 @@ class Minicp {
 			}
 		}
 		
+		return $assigned_channels;
+		
+
+	}
+	
+	/**
+	 * Widget
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	
+	function widget()
+	{
+	
+
+		// are we allowed to display Mini CP ?
+		
+		if(!$this->EE->minicp_lib->check_access())
+		{
+			return "";
+		}
 		
 		
-		// Toolbar quicklinks
+		// retrieve site_id		
+		
+		$site_id = $this->EE->config->item('site_id');
+
+		// site switch
+		// we switch site session here since ExpressionEngine disabled the base64 redirect method
+		// (for more infos, see system/expressionengine/controllers/cp/sites.php, _site_switch method)
+		
+		if($this->EE->config->item('multiple_sites_enabled') == "y")
+		{
+			$this->EE->config->site_prefs('', $site_id);
+			$this->EE->functions->set_cookie('cp_last_site_id', $site_id, 0);
+		}
+		
+		// fetch parameters
+		
+		$entry_id = $this->EE->TMPL->fetch_param('entry_id');
+		
+		
+		// define base url
+		
+		$base = $this->EE->config->item('cp_url');
+
+		if(strpos($base, ".php") === false)
+		{
+			$base .= "index.php";
+		}
+		
+		$base .= QUERY_MARKER."S=".$this->EE->session->userdata('session_id');
+		
+		
+		// retrieve action ids
+		
+		$site_index = $this->EE->functions->fetch_site_index(0, 1);
+		$logout_action_id = $this->EE->db->where(array('class' => 'Member', 'method' => 'member_logout'))->get('actions')->row('action_id');
+		$search_action_id = $this->EE->db->where(array('class' => 'Minicp', 'method' => 'search'))->get('actions')->row('action_id');
+		$search_action_url = $site_index.QUERY_MARKER."ACT=".$search_action_id;
+		$logout_action_url = $site_index.QUERY_MARKER."ACT=".$logout_action_id;
+			
+	
+		// get assigned channel
+		
+		$assigned_channels = $this->assigned_channels();
+		
+		
+		/****************************
+		* Defined toolbar quicklinks
+		*****************************/
 		
 		$quick_links = array();
 		
@@ -233,7 +239,7 @@ class Minicp {
 					{
 						if($k_channel_id == $entry->row('channel_id'))
 						{
-							$quick_links[0] .= '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'">Edit Entry</a></li>';
+							$quick_links[0] .= '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$entry->row('channel_id').AMP.'entry_id='.$entry_id).'">Edit Entry</a></li>';
 						}
 					}
 					
@@ -292,6 +298,16 @@ class Minicp {
 		
 		if($this->EE->session->userdata['group_id'] == 1 || $this->EE->session->userdata['can_moderate_comments'] == "y")
 		{
+		
+			// count pending comments if comment module installed
+			
+			$nb_comments = 0;
+			
+			if ($this->EE->db->table_exists('comments'))
+			{
+				$nb_comments = $this->EE->db->where(array('status' => 'p', 'site_id' => $site_id))->get('comments')->num_rows();
+			}
+		
 			$quick_links[3] = '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=comment'.AMP.'status=p').'">Comments';
 			
 			if($nb_comments > 0)
@@ -307,9 +323,9 @@ class Minicp {
 
 		$quick_links[4] = '
 			<li class="li1 more">
-				<a class="a1" href="'.$base.AMP.'D=cp'.AMP.'C=homepage">Control Panel<span></span></a>
+				<a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage').'">Control Panel<span></span></a>
 				<ul class="ul2">
-					<li><a href="'.$base.AMP.'D=cp'.AMP.'C=homepage">CP Home</a></li>
+					<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage').'">CP Home</a></li>
 					';
 					
 					
@@ -321,12 +337,12 @@ class Minicp {
 						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_content'.AMP.'M=channel_management">Channels</a></li>';
 						
 						
-						//categories
+						// categories
 						
 						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_content'.AMP.'M=category_management">Categories</a></li>';
 						
 						
-						/* Custom Fields */
+						// custom fields
 						
 						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_content'.AMP.'M=field_group_management">Custom Fields</a></li>';
 					}
@@ -347,7 +363,9 @@ class Minicp {
 						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_system'.AMP.'M=general_configuration">General Configuration</a></li>';
 					}
 					
+					
 					// Templates
+					
 					if($this->EE->session->userdata['group_id'] == 1 ||$this->EE->session->userdata['can_access_design'] == 'y') {
 						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=design'.AMP.'M=manager">Templates</a></li>';
 					}

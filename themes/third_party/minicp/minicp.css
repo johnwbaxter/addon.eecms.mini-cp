@@ -7,6 +7,7 @@
 	http://devaddons.dukt/themes/third_party/minicp/minicp.css?v1.4
 */
 
+
 #minicp-widget {
 	font-size: 13px;
 	position: fixed;
@@ -15,6 +16,7 @@
 	top: 0;
 	left: 0;
 	width: 100%;
+	font-family: Arial;
 
 }
 
@@ -181,6 +183,11 @@
 	box-shadow: 0px 4px 10px #000000;
 }
 
+
+#minicp-search-results ul {
+	padding: 0;
+}
+
 .minicp .active #minicp-search-results{
 	display: block;	
 }
@@ -253,6 +260,7 @@
 	border: 0;
 	background: #fff;
 	height: 20px;
+	outline: none;
 }
 
 .minicp .search-input {

@@ -77,6 +77,7 @@ class Minicp_upd {
 	function _create_tables()
 	{
 		
+		$this->EE->load->dbforge();
 		// Mini CP Table : Toolbars
 		
 		$fields = array(
@@ -90,7 +91,6 @@ class Minicp_upd {
 						'left_links'		=> array('type' => 'text'),
 						'right_links'		=> array('type' => 'text'),
 						);
-
 		$this->EE->dbforge->add_field($fields);
 		$this->EE->dbforge->add_key('id', TRUE);
 		$this->EE->dbforge->create_table('minicp_toolbars');

@@ -1,4 +1,4 @@
-<?
+<?php
 $items = array(
 	0 => '	<li class="li1" rel="0"><a class="a1" href="#">'.$this->lang->line('edit_entry').'</a></li> ',
 	1 => '	<li class="li1 more" rel="1"><a class="a1" href="#">'.$this->lang->line('new_entry').'<span></span></a></li>',
@@ -55,25 +55,25 @@ foreach($items as $k => $v)
 
 ?>
 
-<div id="minicp-cp" rel="<?=$save_toolbar_action?>">
-	<h2 id="minicp-enable"><label><input type="checkbox" <?
+<div id="minicp-cp" rel="<?php echo $save_toolbar_action?>">
+	<h2 id="minicp-enable"><label><input type="checkbox" <?php
 	if($init_enabled == 1)
 	{
 		echo ' checked="checked"';
 	}
-	?> /> <?=$this->lang->line('enable_minicp')?></label></h2>
+	?> /> <?php echo $this->lang->line('enable_minicp')?></label></h2>
 	
 	
 	<div id="minicp-toolbar" class="minicp">
 		<div class="minicp-wrap">
 			<div class="minicp-pad">
 				<ul class="ul1 minicp-left">
-					<?
+					<?php
 					echo $items_left;
 					?>
 				</ul> 
 				<ul class="ul1 minicp-right"> 
-					<?
+					<?php
 					echo $items_right;
 					?>
 				</ul>
@@ -89,7 +89,7 @@ foreach($items as $k => $v)
 		
 		<div class="zone">
 			<ul>
-				<?
+				<?php
 				foreach($items_unused as $item)
 				{
 					echo $items[$item];
@@ -101,5 +101,5 @@ foreach($items as $k => $v)
 	</div>
 	<div class="minicp-clearleft"></div>
 
-	<h3 class="center"><?=$this->lang->line('dragdrop_favorites')?></h3>
+	<h3 class="center"><?php echo $this->lang->line('dragdrop_favorites')?></h3>
 </div>

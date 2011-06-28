@@ -12,7 +12,7 @@
  
 class Minicp_upd {
 
-	var $version = '1.4';
+	var $version = '1.5';
 	
 	/**
 	 * Constructor

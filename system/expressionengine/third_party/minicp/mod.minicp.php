@@ -115,6 +115,8 @@ class Minicp {
 	
 	function widget()
 	{
+	
+		$this->EE->lang->loadfile('minicp');
 
 		// are we allowed to display Mini CP ?
 		
@@ -197,7 +199,7 @@ class Minicp {
 					{
 						if($channel_id == $entry->row('channel_id'))
 						{
-							$quick_links[0] .= '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'">Edit Entry</a></li>';
+							$quick_links[0] .= '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'">'.$this->EE->lang->line('edit_entry').'</a></li>';
 						}
 					}
 					
@@ -225,7 +227,7 @@ class Minicp {
 			{
 				$quick_links[1] .= '
 					<li class="li1 more">
-						<a class="a1" href="#">New Entry<span></span></a><ul class="ul2">';
+						<a class="a1" href="#">'.$this->EE->lang->line('new_entry').'<span></span></a><ul class="ul2">';
 								foreach($allowed_channel_titles as $channel_id => $channel_title) {
 									$quick_links[1] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id).'">'.$channel_title.'</a></li>';
 								}
@@ -245,7 +247,7 @@ class Minicp {
 			$quick_links[2] .= '
 				<li class="li1 search ui-widget more">
 					<div class="search-input">
-						<input type="text" class="input" name="minicpsearch" id="minicp-jquery" rel="'.$search_action_url.'" value="" alt="Search entries..." />
+						<input type="text" class="input" name="minicpsearch" id="minicp-jquery" rel="'.$search_action_url.'" value="" alt="'.$this->EE->lang->line('search_entries').'" />
 					</div>
 					
 					<div class="box-arrow">
@@ -272,7 +274,7 @@ class Minicp {
 				$nb_comments = $this->EE->db->where(array('status' => 'p', 'site_id' => $site_id))->get('comments')->num_rows();
 			}
 		
-			$quick_links[3] = '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=comment'.AMP.'status=p').'">Comments';
+			$quick_links[3] = '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=comment'.AMP.'status=p').'">'.$this->EE->lang->line('comments');
 			
 			if($nb_comments > 0)
 			{
@@ -287,9 +289,9 @@ class Minicp {
 
 		$quick_links[4] = '
 			<li class="li1 more">
-				<a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage').'">Control Panel<span></span></a>
+				<a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage').'">'.$this->EE->lang->line('control_panel').'<span></span></a>
 				<ul class="ul2">
-					<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage').'">CP Home</a></li>
+					<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=homepage').'">'.$this->EE->lang->line('cp_home').'</a></li>
 					';
 					
 					
@@ -298,17 +300,17 @@ class Minicp {
 						
 						// channels
 						
-						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=channel_management').'">Channels</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=channel_management').'">'.$this->EE->lang->line('channels').'</a></li>';
 						
 						
 						// categories
 						
-						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=category_management').'">Categories</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=category_management').'">'.$this->EE->lang->line('categories').'</a></li>';
 						
 						
 						// custom fields
 						
-						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=field_group_management').'">Custom Fields</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=field_group_management').'">'.$this->EE->lang->line('custom_fields').'</a></li>';
 					}
 					
 					
@@ -316,7 +318,7 @@ class Minicp {
 					
 					if($this->EE->session->userdata['group_id'] == 1 || ($this->EE->session->userdata['can_access_admin'] == 'y' && $this->EE->session->userdata['can_access_members'] == 'y'))
 					{
-						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=members').'">Members</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=members').'">'.$this->EE->lang->line('members').'</a></li>';
 					}
 					
 					
@@ -324,14 +326,14 @@ class Minicp {
 					
 					if($this->EE->session->userdata['group_id'] == 1 || ($this->EE->session->userdata['can_access_admin'] == 'y' && $this->EE->session->userdata['can_access_sys_prefs'] == 'y'))
 					{
-						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_system'.AMP.'M=general_configuration').'">General Configuration</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_system'.AMP.'M=general_configuration').'">'.$this->EE->lang->line('general_config').'</a></li>';
 					}
 					
 					
 					// Templates
 					
 					if($this->EE->session->userdata['group_id'] == 1 ||$this->EE->session->userdata['can_access_design'] == 'y') {
-						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=design'.AMP.'M=manager').'">Templates</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=design'.AMP.'M=manager').'">'.$this->EE->lang->line('templates').'</a></li>';
 					}
 					
 	$quick_links[4] .= '				
@@ -345,8 +347,8 @@ class Minicp {
 				<li class="li1 more">
 					<a class="a1" href="#">'.$this->EE->session->userdata['screen_name'].' <span></span></a>
 						<ul class="ul2">
-							<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=myaccount').'">My Account</a></li>
-							<li><a href="'.$logout_action_url.'">Logout</a></li>
+							<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=myaccount').'">'.$this->EE->lang->line('my_account').'</a></li>
+							<li><a href="'.$logout_action_url.'">'.$this->EE->lang->line('logout').'</a></li>
 						</ul>
 				</li>';
 

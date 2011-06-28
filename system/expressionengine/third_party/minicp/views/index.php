@@ -1,7 +1,7 @@
 <?
 $items = array(
-	0 => '	<li class="li1" rel="0"><a class="a1" href="#">Edit Entry</a></li> ',
-	1 => '	<li class="li1 more" rel="1"><a class="a1" href="#">New Entry<span></span></a></li>',
+	0 => '	<li class="li1" rel="0"><a class="a1" href="#">'.$this->lang->line('edit_entry').'</a></li> ',
+	1 => '	<li class="li1 more" rel="1"><a class="a1" href="#">'.$this->lang->line('new_entry').'<span></span></a></li>',
 	2 => '
 			<li rel="2" class="li1 search ui-widget more"> 
 				<div class="search-input"> 
@@ -9,8 +9,8 @@ $items = array(
 				</div>
 			</li> 
 	',
-	3 => '<li class="li1" rel="3"><a class="a1" href="#">Comments <strong>1</strong></a></li> ',
-	4 => '<li class="li1" rel="4"><a class="a1" href="#">Control Panel</a></li> ',
+	3 => '<li class="li1" rel="3"><a class="a1" href="#">'.$this->lang->line('comments').' <strong>1</strong></a></li> ',
+	4 => '<li class="li1" rel="4"><a class="a1" href="#">'.$this->lang->line('control_panel').'</a></li> ',
 	5 => '<li class="li1 more" rel="5"><a class="a1" href="#">'.$this->session->userdata['screen_name'].' <span></span></a></li>',
 );
 
@@ -61,7 +61,7 @@ foreach($items as $k => $v)
 	{
 		echo ' checked="checked"';
 	}
-	?> /> Enable your Mini CP Toolbar</label></h2>
+	?> /> <?=$this->lang->line('enable_minicp')?></label></h2>
 	
 	
 	<div id="minicp-toolbar" class="minicp">
@@ -101,5 +101,5 @@ foreach($items as $k => $v)
 	</div>
 	<div class="minicp-clearleft"></div>
 
-	<h3 class="center">Drag &amp; Drop your favorite items to your Mini CP Toolbar</h3>
+	<h3 class="center"><?=$this->lang->line('dragdrop_favorites')?></h3>
 </div>

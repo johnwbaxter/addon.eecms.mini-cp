@@ -52,7 +52,7 @@ class Minicp {
 		{
 			$this->allowed_channels = $this->EE->functions->fetch_assigned_channels();
 		}
-
+		
 	}
 	
 	// --------------------------------------------------------------------	
@@ -106,43 +106,6 @@ class Minicp {
 	
 	// --------------------------------------------------------------------	
 	
-	private function assigned_channels()
-	{
-		$assigned_channels = array();
-	 
-		if ($this->EE->session->userdata['group_id'] == 1)
-		{
-			$this->EE->db->select('channel_id, channel_title');
-			$this->EE->db->order_by('channel_title');
-			$result = $this->EE->db->get_where('channels', 
-											array('site_id' => $this->EE->config->item('site_id')));
-		}
-		else
-		{
-			$result = $this->EE->db->query("SELECT ew.channel_id, ew.channel_title FROM exp_channel_member_groups ewmg, exp_channels ew
-								  WHERE ew.channel_id = ewmg.channel_id
-								  AND ewmg.group_id = '".$this->EE->db->escape_str($this->EE->session->userdata['group_id'])."'
-								  AND site_id = '".$this->EE->db->escape_str($this->EE->config->item('site_id'))."'
-								  ORDER BY ew.channel_title");
-
-		}
-		
-		
-		// build assigned channels array
-		
-		if ($result->num_rows() > 0)
-		{
-			foreach ($result->result_array() as $row)
-			{
-				$assigned_channels[$row['channel_id']] = $row['channel_title'];
-			}
-		}
-		
-		return $assigned_channels;
-		
-
-	}
-	
 	/**
 	 * Widget
 	 *
@@ -152,7 +115,6 @@ class Minicp {
 	
 	function widget()
 	{
-	
 
 		// are we allowed to display Mini CP ?
 		
@@ -201,10 +163,6 @@ class Minicp {
 		$search_action_url = $site_index.QUERY_MARKER."ACT=".$search_action_id;
 		$logout_action_url = $site_index.QUERY_MARKER."ACT=".$logout_action_id;
 			
-	
-		// get assigned channel
-		
-		$assigned_channels = $this->assigned_channels();
 		
 		
 		/****************************
@@ -214,7 +172,7 @@ class Minicp {
 		$quick_links = array();
 		
 		
-		// 0 : Edit Page
+		// 0 : Edit Entry
 		
 		$quick_links[0] = '';
 		if($entry_id)
@@ -235,11 +193,11 @@ class Minicp {
 				
 					// check that the entry channels is one that the member can use
 					
-					foreach($assigned_channels as $k_channel_id => $v_channel_title)
+					foreach($this->allowed_channels as $channel_id)
 					{
-						if($k_channel_id == $entry->row('channel_id'))
+						if($channel_id == $entry->row('channel_id'))
 						{
-							$quick_links[0] .= '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$entry->row('channel_id').AMP.'entry_id='.$entry_id).'">Edit Entry</a></li>';
+							$quick_links[0] .= '<li class="li1"><a class="a1" href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id.AMP.'entry_id='.$entry_id).'">Edit Entry</a></li>';
 						}
 					}
 					
@@ -252,18 +210,24 @@ class Minicp {
 		}
 		
 		
-		// 2 : New Page
+		// 2 : New Entry
 		
 		$quick_links[1] = '';
+		
+
+		// get channel titles
+		
+		$allowed_channel_titles = $this->allowed_channel_titles();
+		
 		if($this->EE->session->userdata['group_id'] == 1 || ($this->EE->session->userdata['can_access_content'] == 'y' && $this->EE->session->userdata['can_access_publish'] == 'y'))
 		{
-			if(count($assigned_channels) > 0)
+			if(count($allowed_channel_titles) > 0)
 			{
 				$quick_links[1] .= '
 					<li class="li1 more">
 						<a class="a1" href="#">New Entry<span></span></a><ul class="ul2">';
-								foreach($assigned_channels as $ac_channel_id => $ac_channel_title) {
-									$quick_links[1] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$ac_channel_id).'">'.$ac_channel_title.'</a></li>';
+								foreach($allowed_channel_titles as $channel_id => $channel_title) {
+									$quick_links[1] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=content_publish'.AMP.'M=entry_form'.AMP.'channel_id='.$channel_id).'">'.$channel_title.'</a></li>';
 								}
 								$quick_links[1] .= '
 							</ul>						
@@ -334,17 +298,17 @@ class Minicp {
 						
 						// channels
 						
-						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_content'.AMP.'M=channel_management">Channels</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=channel_management').'">Channels</a></li>';
 						
 						
 						// categories
 						
-						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_content'.AMP.'M=category_management">Categories</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=category_management').'">Categories</a></li>';
 						
 						
 						// custom fields
 						
-						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_content'.AMP.'M=field_group_management">Custom Fields</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_content'.AMP.'M=field_group_management').'">Custom Fields</a></li>';
 					}
 					
 					
@@ -352,7 +316,7 @@ class Minicp {
 					
 					if($this->EE->session->userdata['group_id'] == 1 || ($this->EE->session->userdata['can_access_admin'] == 'y' && $this->EE->session->userdata['can_access_members'] == 'y'))
 					{
-						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=members">Members</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=members').'">Members</a></li>';
 					}
 					
 					
@@ -360,14 +324,14 @@ class Minicp {
 					
 					if($this->EE->session->userdata['group_id'] == 1 || ($this->EE->session->userdata['can_access_admin'] == 'y' && $this->EE->session->userdata['can_access_sys_prefs'] == 'y'))
 					{
-						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=admin_system'.AMP.'M=general_configuration">General Configuration</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=admin_system'.AMP.'M=general_configuration').'">General Configuration</a></li>';
 					}
 					
 					
 					// Templates
 					
 					if($this->EE->session->userdata['group_id'] == 1 ||$this->EE->session->userdata['can_access_design'] == 'y') {
-						$quick_links[4] .= '<li><a href="'.$base.AMP.'D=cp'.AMP.'C=design'.AMP.'M=manager">Templates</a></li>';
+						$quick_links[4] .= '<li><a href="'.$this->EE->minicp_lib->cp_backlink('D=cp'.AMP.'C=design'.AMP.'M=manager').'">Templates</a></li>';
 					}
 					
 	$quick_links[4] .= '				
@@ -387,7 +351,7 @@ class Minicp {
 				</li>';
 
 		
-		// toolbar
+		// Toolbar
 		
 		$this->EE->load->model('minicp_model');
 		$toolbar = $this->EE->minicp_model->get_toolbar();
@@ -410,17 +374,27 @@ class Minicp {
 				<div id="minicp-widget-pad">
 					<ul class="ul1 minicp-left">';
 					
-					foreach($toolbar_left as $v) {
-						if(isset($quick_links[$v])) {
-						$r .= $quick_links[$v];
+					
+					// retrieve quicklinks to put on the left
+					
+					foreach($toolbar_left as $v)
+					{
+						if(isset($quick_links[$v]))
+						{
+							$r .= $quick_links[$v];
 						}
 					}
 		
 				$r.='</ul>';
 				$r.='<ul class="ul1 minicp-right">';
-					foreach($toolbar_right as $v) {
-						if(isset($quick_links[$v])) {
-						
+				
+				
+					// retrieve quicklinks to put on the right
+					
+					foreach($toolbar_right as $v)
+					{
+						if(isset($quick_links[$v]))
+						{
 							$r .= $quick_links[$v];
 						}
 					}
@@ -517,8 +491,36 @@ class Minicp {
 		$url = $this->EE->config->item('theme_folder_url')."third_party/minicp/";
 		return $url;
 	}
-
 	
+	// --------------------------------------------------------------------	
+	
+	/**
+	 * Get channel titles
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	private function allowed_channel_titles()
+	{
+		$channel_titles = array();
+	 
+		$this->EE->db->where_in('channel_id', $this->allowed_channels);
+		$this->EE->db->order_by('channel_title', 'asc');
+		$query = $this->EE->db->get('channels');
+		
+		
+		// build assigned channels array
+		
+		if ($query->num_rows() > 0)
+		{
+			foreach ($query->result_array() as $row)
+			{
+				$channel_titles[$row['channel_id']] = $row['channel_title'];
+			}
+		}
+		
+		return $channel_titles;
+	}
 }
 /* END Class */
 
